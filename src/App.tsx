@@ -817,7 +817,7 @@ function ServicePage() {
       <Stack minHeight="100vh">
         <Navbar />
         <Container maxWidth="lg" sx={{ py: 4 }}>
-          <Typography variant="h1" sx={{ mb: 3 }}>{service.title}</Typography>
+          <Typography variant="h1" sx={{ mb: 3, fontSize: { xs: '2.5rem', sm: '3.5rem' } }}>{service.title}</Typography>
           <Box
             component="img"
             src={service.banner}
