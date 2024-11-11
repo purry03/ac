@@ -432,7 +432,7 @@ function HomePage() {
                       position: 'relative',
                       cursor: 'pointer',
                       border: '1px solid rgba(0,0,0,0.12)',
-                      bgcolor: 'background.paper',
+                      background: 'url(/background.png) no-repeat center center / cover',
                       transition: 'all 0.3s ease',
                       '&:hover': {
                         boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
@@ -460,6 +460,7 @@ function HomePage() {
                           width: '100%',
                           height: '100%',
                           objectFit: 'contain',
+                          mixBlendMode: 'multiply'
                         }}
                       />
                     </Box>
@@ -468,12 +469,13 @@ function HomePage() {
                         variant="h5" 
                         sx={{ 
                           color: 'text.primary',
-                          fontWeight: 500
+                          fontWeight: 500,
+                          fontSize: { xs: '1.1rem', sm: '1.5rem' }
                         }}
                       >
                         {service.title}
                       </Typography>
-                      <Typography 
+                      {!isMobile && <Typography 
                         variant="body2" 
                         color="text.secondary"
                         sx={{
@@ -484,7 +486,7 @@ function HomePage() {
                         }}
                       >
                         {service.description}
-                      </Typography>
+                      </Typography>}
                     </Stack>
                   </Stack>
                 ))}
