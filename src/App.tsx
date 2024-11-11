@@ -405,59 +405,86 @@ function HomePage() {
             >
               Our Services
             </Typography>
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
               <Stack 
                 component={motion.div}
                 variants={staggerContainer}
                 initial="initial"
                 whileInView="animate"
                 viewport={{ once: true }}
-                direction="row" 
-                flexWrap="wrap" 
-                justifyContent="space-between"
-                sx={{ 
-                  gap: 3,
-                  width: '100%'
-                }}
+                direction={{ xs: 'column', md: 'row' }}
+                flexWrap="wrap"
+                gap={2}
+                sx={{ width: '100%' }}
               >
                 {services.map((service) => (
                   <Stack 
                     component={motion.div}
-                    flexGrow={1}
                     variants={fadeInUp}
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.02 }}
                     key={service.title}
                     onClick={() => navigate(`/service/${encodeURIComponent(service.title.toLowerCase().replace(/ /g, '-'))}`)}
                     sx={{
-                      width: { xs: '100%', sm: 'calc(50% - 24px)', md: 'calc(33.333% - 24px)' },
-                      height: { xs: '200px', sm: '250px' },
+                      width: { xs: '100%', md: 'calc(50% - 16px)' },
+                      height: '120px',
                       borderRadius: 2,
                       overflow: 'hidden',
                       position: 'relative',
                       cursor: 'pointer',
+                      border: '1px solid rgba(0,0,0,0.12)',
+                      bgcolor: 'background.paper',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                      }
                     }}
+                    direction="row"
+                    alignItems="center"
+                    spacing={3}
+                    p={3}
                   >
                     <Box
-                      component="img"
-                      src={service.image}
-                      alt={service.title}
                       sx={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}
-                    />
-                    <Stack
-                      sx={{
-                        position: 'absolute',
-                        bottom: 0,
-                        width: '100%',
-                        background: 'rgba(0,0,0,0.7)',
-                        p: { xs: 1.5, sm: 2 },
+                        width: '80px',
+                        height: '80px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       }}
                     >
-                      <Typography variant={isMobile ? 'subtitle1' : 'h6'} color="white">{service.title}</Typography>
-                      <Typography variant="body2" color="white">{service.description}</Typography>
+                      <Box
+                        component="img"
+                        src={service.image}
+                        alt={service.title}
+                        sx={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain',
+                        }}
+                      />
+                    </Box>
+                    <Stack spacing={1} flex={1}>
+                      <Typography 
+                        variant="h5" 
+                        sx={{ 
+                          color: 'text.primary',
+                          fontWeight: 500
+                        }}
+                      >
+                        {service.title}
+                      </Typography>
+                      <Typography 
+                        variant="body2" 
+                        color="text.secondary"
+                        sx={{
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        {service.description}
+                      </Typography>
                     </Stack>
                   </Stack>
                 ))}
@@ -745,87 +772,35 @@ function HomePage() {
 }
 
 const theme = extendTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-      light: '#42a5f5',
-      dark: '#1565c0',
-      contrastText: '#fff',
-    },
-    secondary: {
-      main: '#9c27b0',
-      light: '#ba68c8', 
-      dark: '#7b1fa2',
-      contrastText: '#fff',
-    },
-    background: {
-      default: '#fff',
-      paper: '#fff',
-    },
-    text: {
-      primary: 'rgba(0, 0, 0, 0.87)',
-      secondary: 'rgba(0, 0, 0, 0.6)',
-    },
-  },
-  typography: {
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-    ].join(','),
-    h1: {
-      fontSize: '2.5rem',
-      fontWeight: 500,
-    },
-    h2: {
-      fontSize: '2rem',
-      fontWeight: 500,
-    },
-    h3: {
-      fontSize: '1.75rem',
-      fontWeight: 500,
-    },
-    h4: {
-      fontSize: '1.5rem',
-      fontWeight: 500,
-    },
-    h5: {
-      fontSize: '1.25rem',
-      fontWeight: 500,
-    },
-    h6: {
-      fontSize: '1rem',
-      fontWeight: 500,
-    },
-    body1: {
-      fontSize: '1rem',
-      lineHeight: 1.5,
-    },
-    body2: {
-      fontSize: '0.875rem',
-      lineHeight: 1.43,
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          borderRadius: 8,
-        },
+  colorSchemes: {
+    light: {
+      palette:{
+      primary: {
+        main: '#1976d2',
+        light: '#42a5f5',
+        dark: '#1565c0',
+        contrastText: '#fff',
       },
-    },
-  },
+      secondary: {
+        main: '#9c27b0',
+        light: '#ba68c8', 
+        dark: '#7b1fa2',
+        contrastText: '#fff',
+      },
+      background: {
+        default: '#fff',
+        paper: '#fff',
+      },
+      text: {
+        primary: 'rgba(0, 0, 0, 0.87)',
+        secondary: 'rgba(0, 0, 0, 0.6)',
+      },
+    }}}
 });
 
 
 function ServicePage() {
   const { serviceId } = useParams();
-  const navigate = useNavigate();
   const service = services.find(s => s.title.toLowerCase().replace(/ /g, '-') === serviceId);
 
   React.useEffect(() => {
