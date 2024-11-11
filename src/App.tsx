@@ -9,49 +9,24 @@ import {
   extendTheme,
   Rating,
   Stack, 
+  TextField, 
   ThemeProvider, 
   Typography,
   useMediaQuery,
-  useTheme
+  useTheme,
+  Snackbar,
+  Alert
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Footer } from './components/Footer';
 import { Navbar } from './components/Navbar';
 import { motion } from 'framer-motion';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from 'react-router-dom';
-
-const services = [
-  {
-    title: 'Split System Cleaning',
-    description: 'Professional cleaning for your split system units',
-    image: '/split-system.jpg'
-  },
-  {
-    title: 'Air Duct Cleaning',
-    description: 'Complete duct system cleaning and sanitization',
-    image: '/duct-cleaning.jpg'
-  },
-  {
-    title: 'Chimney Cleaning',
-    description: 'Professional chimney cleaning and maintenance',
-    image: '/chimney.jpg'
-  },
-  {
-    title: 'Outdoor Unit Service',
-    description: 'Comprehensive outdoor HVAC unit maintenance',
-    image: '/outdoor-unit.jpeg'
-  },
-  {
-    title: 'Air Filter Replacement',
-    description: 'Quality air filter replacement service',
-    image: '/air-filter.jpg'
-  },
-  {
-    title: 'Commercial Services',
-    description: 'Complete HVAC solutions for businesses',
-    image: '/commercial.webp'
-  }
-];
+import emailjs from '@emailjs/browser';
+import { Markdown } from './components/Markdown';
+import React from 'react';
+import { services } from './services';
+import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
 const stats = [
   { value: '24/7', label: 'Emergency Service', description: 'We understand that emergencies can happen at any time. That\'s why we offer emergency service for our air duct cleaning services. If you have an emergency, you can call us 24/7 and we will be there to help you.' },
@@ -93,6 +68,26 @@ const faqs = [
   },
 ];
 
+const beforeAfterImages = [
+  {
+    before: '/before1.png',
+    after: '/after1.png',
+  },
+  {
+    before: '/before3.png',
+    after: '/after3.png',
+  },
+  {
+    before: '/before4.png',
+    after: '/after4.png',
+  },
+  {
+    before: '/before5.png',
+    after: '/after5.png',
+  },
+  // Add more image pairs as needed
+];
+
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
   animate: { opacity: 1, y: 0 },
@@ -122,6 +117,45 @@ function HomePage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
+  const [snackbar, setSnackbar] = React.useState({
+    open: false,
+    message: '',
+    severity: 'success' as 'success' | 'error'
+  });
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    
+    try {
+      await emailjs.send(
+        'service_ew98941',
+        'template_pu2non8',
+        {
+          name: formData.get('name'),
+          phone: formData.get('phone'),
+          message: formData.get('message'),
+        },
+        'tRC8wr2iARFXw9n_e'
+      );
+      
+      setSnackbar({
+        open: true,
+        message: 'Message sent successfully!',
+        severity: 'success'
+      });
+      form.reset();
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setSnackbar({
+        open: true,
+        message: 'Failed to send message. Please try again.',
+        severity: 'error'
+      });
+    }
+  };
 
   return (
     <ThemeProvider theme={theme} defaultMode='dark'>
@@ -152,6 +186,7 @@ function HomePage() {
             >
               <Stack spacing={{ xs: 3, sm: 6 }} maxWidth="1200px" px={{ xs: 2, sm: 4 }}>
                 <Stack spacing={3} alignItems="center" component={motion.div} {...fadeInUp}>
+                <img src="/logo.png" height={120} />
                   <Typography 
                     variant={isMobile ? 'h6' : 'h5'}
                     color='#00cc00'
@@ -164,7 +199,7 @@ function HomePage() {
                       fontSize: { xs: '0.9rem', sm: undefined },
                     }}
                   >
-                    Alpha Duct Cleaning
+                    Alpha Duct Cleanings
                   </Typography>
                   {/* <img src="/logo.png" height={100} /> */}
                   <Typography 
@@ -179,7 +214,7 @@ function HomePage() {
                       fontSize: { xs: '1.75rem', sm: '2.75rem', md: '3.75rem' }
                     }}
                   >
-                    Professional Air Duct Cleaning for Melbourne Homes and Businesses
+                    Fresh air, every breath
                   </Typography>
                 </Stack>
 
@@ -231,7 +266,7 @@ function HomePage() {
                 {/* CTA Button */}
                 <Button
                   component={motion.a}
-                  href="tel:0312345678"
+                  href="tel:61467788814"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   variant="contained" 
@@ -325,7 +360,10 @@ function HomePage() {
                     p: { xs: 3, sm: 4 },
                     borderRadius: 2,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    height: { xs: 'auto', md: '450px' }, // Added fixed height
+                    display: 'flex',
+                    flexDirection: 'column'
                   }}
                 >
                   <Typography 
@@ -338,6 +376,8 @@ function HomePage() {
                   <Typography 
                     variant="body1" 
                     color="text.secondary"
+                    mt='auto'
+                    align='center'
                   >
                     {stat.description}
                   </Typography>
@@ -363,9 +403,9 @@ function HomePage() {
               mb={{ xs: 4, sm: 6 }}
               textAlign="center"
             >
-              Specialized HVAC Services
+              Our Services
             </Typography>
-            <Container maxWidth="lg">
+            <Container maxWidth="xl">
               <Stack 
                 component={motion.div}
                 variants={staggerContainer}
@@ -374,7 +414,7 @@ function HomePage() {
                 viewport={{ once: true }}
                 direction="row" 
                 flexWrap="wrap" 
-                justifyContent="center"
+                justifyContent="space-between"
                 sx={{ 
                   gap: 3,
                   width: '100%'
@@ -383,6 +423,7 @@ function HomePage() {
                 {services.map((service) => (
                   <Stack 
                     component={motion.div}
+                    flexGrow={1}
                     variants={fadeInUp}
                     whileHover={{ scale: 1.05 }}
                     key={service.title}
@@ -479,6 +520,61 @@ function HomePage() {
           </Stack>
         </Box>
 
+        {/* Before/After Section */}
+        <Box sx={{ bgcolor: 'background.default' }}>
+          <Container maxWidth="lg">
+            <Stack py={{ xs: 4, sm: 6, md: 8 }} px={{ xs: 2, sm: 4 }}>
+              <Typography 
+                component={motion.h3}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                variant={isMobile ? 'h4' : 'h3'}
+                mb={{ xs: 4, sm: 6 }}
+                textAlign="center"
+              >
+                Before & After Results
+              </Typography>
+              <Stack 
+                component={motion.div}
+                variants={staggerContainer}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true }}
+                direction={{ xs: 'column', md: 'row' }}
+                spacing={0}
+                flexWrap="wrap"
+                justifyContent="space-around"
+              >
+                {beforeAfterImages.map((item, index) => (
+                  <Stack 
+                    key={index}
+                    component={motion.div}
+                    variants={fadeInUp}
+                    spacing={2}
+                    my={1}
+                    sx={{
+                      width: { xs: '100%', md: '45%' },
+                      aspectRatio: '1/1',
+                    }}
+                  >
+                    <ReactCompareSlider
+                      itemOne={<ReactCompareSliderImage src={item.before} alt="Before" style={{ objectFit: 'cover' }} />}
+                      itemTwo={<ReactCompareSliderImage src={item.after} alt="After" style={{ objectFit: 'cover' }} />}
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                        borderRadius: '8px',
+                        overflow: 'hidden'
+                      }}
+                    />
+                  </Stack>
+                ))}
+              </Stack>
+            </Stack>
+          </Container>
+        </Box>
+
         {/* FAQ Section */}
         <Box sx={{ bgcolor: 'white' }} id="faq">
           <Container maxWidth="lg">
@@ -514,6 +610,8 @@ function HomePage() {
             </Stack>
           </Container>
         </Box>
+        
+        
 
         {/* Contact Us Section */}
         <Box sx={{
@@ -558,20 +656,9 @@ function HomePage() {
                     border: 0
                   }}
                   frameBorder="0"
-                  src="https://www.google.com/maps/embed/v1/place?q=melbourne&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
+                  src="https://www.google.com/maps/embed/v1/place?q=30 Medway Rd Caraigieburn, Melbourne VIC 3000&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
                 />
               </Box>
-              <Box
-                sx={{
-                  '& img.text-marker': {
-                    maxWidth: 'none !important',
-                    background: 'none !important'
-                  },
-                  '& img': {
-                    maxWidth: 'none'
-                  }
-                }}
-              />
             </Box>
             <Stack 
               component={motion.div}
@@ -594,44 +681,62 @@ function HomePage() {
                 Get in Touch with Our Duct Cleaning Experts Today!
               </Typography>
               
-              <Stack spacing={2}>
-                <Typography variant="body1">
-                  <strong>Address:</strong> 123 Main Street, Melbourne VIC 3000
-                </Typography>
-                <Typography variant="body1">
-                  <strong>Phone:</strong> (03) 9123 4567
-                </Typography>
-                <Typography variant="body1">
-                  <strong>Email:</strong> info@dustaway.com.au
-                </Typography>
-                <Typography variant="body1">
-                  <strong>Hours:</strong> Monday - Friday: 8am - 6pm
-                  <br />
-                  Saturday: 9am - 4pm
-                  <br />
-                  Sunday: Closed
-                </Typography>
+              <Stack component="form" spacing={3} onSubmit={handleSubmit}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Name"
+                  variant="outlined"
+                  name="name"
+                />
+                <TextField
+                  fullWidth
+                  label="Phone Number (Optional)"
+                  variant="outlined"
+                  name="phone"
+                />
+                <TextField
+                  required
+                  fullWidth
+                  label="Message"
+                  variant="outlined"
+                  name="message"
+                  multiline
+                  rows={4}
+                />
+                <Button 
+                  component={motion.button}
+                  type="submit"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  variant="contained" 
+                  size={isMobile ? 'medium' : 'large'}
+                  sx={{ 
+                    py: { xs: 1.5, sm: 2 },
+                    fontSize: { xs: '1rem', sm: '1.1rem' },
+                    textTransform: 'none'
+                  }}
+                >
+                  Send Message
+                </Button>
               </Stack>
-
-              <Button 
-                component={motion.a}
-                href="tel:0312345678"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                variant="contained" 
-                size={isMobile ? 'medium' : 'large'}
-                sx={{ 
-                  py: { xs: 1.5, sm: 2 },
-                  fontSize: { xs: '1rem', sm: '1.1rem' },
-                  textTransform: 'none',
-                  mt: 2
-                }}
-              >
-                Call Now
-              </Button>
             </Stack>
           </Stack>
         </Box>
+
+        <Snackbar 
+          open={snackbar.open} 
+          autoHideDuration={6000} 
+          onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+        >
+          <Alert 
+            onClose={() => setSnackbar(prev => ({ ...prev, open: false }))} 
+            severity={snackbar.severity}
+            sx={{ width: '100%' }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
 
         <Footer />
       </Stack>
@@ -723,6 +828,10 @@ function ServicePage() {
   const navigate = useNavigate();
   const service = services.find(s => s.title.toLowerCase().replace(/ /g, '-') === serviceId);
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   if (!service) {
     return <div>Service not found</div>;
   }
@@ -731,11 +840,10 @@ function ServicePage() {
       <Stack minHeight="100vh">
         <Navbar />
         <Container maxWidth="lg" sx={{ py: 4 }}>
-          <Button onClick={() => navigate(-1)}>Back</Button>
-          <Typography variant="h2" sx={{ mb: 3 }}>{service.title}</Typography>
+          <Typography variant="h1" sx={{ mb: 3 }}>{service.title}</Typography>
           <Box
             component="img"
-            src={service.image}
+            src={service.banner}
             alt={service.title}
             sx={{
               width: '100%',
@@ -745,9 +853,71 @@ function ServicePage() {
               mb: 3
             }}
           />
-          <Typography variant="body1">{service.description}</Typography>
-          {/* Add more service details here */}
+          {service.body && (
+            <Box sx={{ mt: 3 }}>
+              <Markdown content={service.body} />
+            </Box>
+          )}
+          
+          {/* Added CTA Section */}
+          <Box
+            sx={{
+              mt: 6,
+              p: 4,
+              bgcolor: 'primary.main',
+              borderRadius: 2,
+              textAlign: 'center',
+              color: 'white',
+            }}
+          >
+            <Typography variant="h4" sx={{ mb: 2 }}>
+              Ready to Improve Your Air Quality?
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 4 }}>
+              Get a free quote for your {service.title.toLowerCase()} service today!
+            </Typography>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={2}
+              justifyContent="center"
+            >
+              <Button
+                href="tel:61467788814"
+                variant="contained"
+                size="large"
+                sx={{
+                  bgcolor: 'white',
+                  color: 'primary.main',
+                  '&:hover': {
+                    bgcolor: 'grey.100',
+                  },
+                  px: 4,
+                  py: 1.5,
+                }}
+              >
+                Call Now
+              </Button>
+              <Button
+                href='/#contact'
+                variant="outlined"
+                size="large"
+                sx={{
+                  borderColor: 'white',
+                  color: 'white',
+                  '&:hover': {
+                    borderColor: 'grey.100',
+                    bgcolor: 'rgba(255,255,255,0.1)',
+                  },
+                  px: 4,
+                  py: 1.5,
+                }}
+              >
+                Contact Us
+              </Button>
+            </Stack>
+          </Box>
         </Container>
+        
         <Footer />
       </Stack>
     </ThemeProvider>

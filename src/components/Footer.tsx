@@ -12,7 +12,7 @@ export function Footer() {
             <Stack spacing={isMobile ? 1 : 2}>
               <Typography variant={isMobile ? 'subtitle1' : 'h6'}>Alpha Duct Cleaning</Typography>
               <Typography variant="body2">
-                Professional air duct cleaning services in Melbourne. 
+              Professional air duct cleaning services in Melbourne. 
                 Committed to improving your indoor air quality.
               </Typography>
             </Stack>
@@ -20,19 +20,17 @@ export function Footer() {
           <Grid item xs={12} md={4}>
             <Stack spacing={isMobile ? 1 : 2}>
               <Typography variant={isMobile ? 'subtitle1' : 'h6'}>Contact Info</Typography>
-              <Typography variant="body2">Phone: (03) 1234 5678</Typography>
+              <Typography variant="body2">Phone: (61) 467 788 814</Typography>
               <Typography variant="body2">Email: info@alphaduct.com.au</Typography>
               <Typography variant="body2">
-                Address: 123 Main Street, Melbourne VIC 3000
+                Address: 30 Medway Rd Caraigieburn, Melbourne VIC 3000
               </Typography>
             </Stack>
           </Grid>
           <Grid item xs={12} md={4}>
             <Stack spacing={isMobile ? 1 : 2}>
               <Typography variant={isMobile ? 'subtitle1' : 'h6'}>Business Hours</Typography>
-              <Typography variant="body2">Monday - Friday: 8am - 6pm</Typography>
-              <Typography variant="body2">Saturday: 9am - 4pm</Typography>
-              <Typography variant="body2">Sunday: Closed</Typography>
+              <Typography variant="body2">7 Days a week : 7am - 7pm</Typography>
             </Stack>
           </Grid>
         </Grid>
