@@ -105,9 +105,9 @@ const staggerContainer = {
 
 function App() {
   return (
-    <Router>
+    <Router basename="/ac">
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" index element={<HomePage />} />
         <Route path="/service/:serviceId" element={<ServicePage />} />
       </Routes>
     </Router>
