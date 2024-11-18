@@ -404,6 +404,7 @@ function HomePage() {
           width: '100%'
         }} id="services">
           <Stack py={{ xs: 4, sm: 6, md: 8 }} px={{ xs: 2, sm: 4 }} alignItems="center" sx={{
+            bgcolor: 'rgba(0,0,0,0.5)',
             backdropFilter: 'blur(10px)'
           }}>
             <Typography 
@@ -411,13 +412,13 @@ function HomePage() {
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              variant={isMobile ? 'h4' : 'h3'}
+              variant={isMobile ? 'h4' : 'h3'} 
               mb={{ xs: 4, sm: 6 }}
               textAlign="center"
-              color='white'
               sx={{
-                textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-                WebkitTextStroke: '1px black',
+                color: 'white',
+                fontWeight: 700,
+                textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
               }}
             >
               Our Services
