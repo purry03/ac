@@ -842,10 +842,6 @@ function ServicePage() {
                 <Button
                   variant="outlined"
                   size="large"
-                  onClick={() => {
-                    const element = document.getElementById('quote-form');
-                    element?.scrollIntoView({ behavior: 'smooth' });
-                  }}
                   sx={{
                     py: 2,
                     px: 4,
@@ -856,6 +852,13 @@ function ServicePage() {
                       borderColor: 'white',
                       backgroundColor: 'rgba(255,255,255,0.1)',
                     },
+                  }}
+                  component="button" 
+                  onClick={() => {
+                    navigate('/');
+                    setTimeout(() => {
+                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
                   }}
                 >
                   Get a Free Quote
@@ -967,7 +970,7 @@ function ServicePage() {
                         { icon: '🏆', text: 'Licensed & Insured' },
                         { icon: '⚡', text: 'Same Day Service' },
                         { icon: '💯', text: 'Satisfaction Guaranteed' },
-                        { icon: '', text: 'Competitive Pricing' },
+                        { icon: '💸', text: 'Competitive Pricing' },
                       ].map((item, index) => (
                         <Stack
                           key={index}
