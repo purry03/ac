@@ -254,7 +254,8 @@ function HomePage() {
                         transition: 'transform 0.2s',
                         '&:hover': {
                           bgcolor: 'rgba(255,255,255,0.15)',
-                        }
+                        },
+                        textDecoration: 'inherit'
                       }}
                       spacing={0.5}
                     >
@@ -603,7 +604,7 @@ function HomePage() {
                     spacing={2}
                     my={1}
                     sx={{
-                      width: { xs: '70%', md: '45%' },
+                      width: { xs: '60%', md: '45%' },
                       aspectRatio: '1/1',
                     }}
                   >
