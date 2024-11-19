@@ -17,6 +17,10 @@ import {
   Snackbar,
   Alert,
   CircularProgress,
+  Grid,
+  Card,
+  Fab,
+  Fade,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Footer } from './components/Footer';
@@ -28,6 +32,9 @@ import { Markdown } from './components/Markdown';
 import React from 'react';
 import { services } from './services';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
+import { Call, Email, KeyboardArrowUp } from '@mui/icons-material';
+import '@fontsource/montserrat/700.css'; // For bold headings
+import '@fontsource/montserrat/800.css'; // For extra-bold headings
 
 const stats = [
   { value: '24/7', label: 'Emergency Service', description: 'We recognize that unexpected situations can arise at any moment. That’s why we offer 24/7 emergency air duct cleaning services to ensure we’re available whenever you need us.' },
@@ -56,16 +63,28 @@ const testimonials = [
 
 const faqs = [
   {
-    question: 'How often should I clean my air ducts?',
-    answer: 'We recommend cleaning your air ducts every 3-5 years, depending on usage and environmental factors.',
+    question: "How often should I clean my air ducts?",
+    answer: "We recommend cleaning your air ducts ever year, depending on usage and environmental factors.",
   },
   {
-    question: 'How long does the cleaning process take?',
-    answer: 'A typical residential duct cleaning service takes 2-4 hours, depending on the size of your system.',
+    question: "How long does the cleaning process take?",
+    answer: "A typical residential duct cleaning service takes 60-90 minutes, depending on the size of your system.",
   },
   {
-    question: 'Do you offer emergency services?',
-    answer: 'Yes, we provide 24/7 emergency services for urgent HVAC issues.',
+    question: "Do you offer emergency services?",
+    answer: "Yes, we provide 24/7 emergency services for urgent HVAC issues.",
+  },
+  {
+    question: "What are the signs that I need duct cleaning?",
+    answer: "Common signs include visible dust coming from vents, increased allergy symptoms, musty odors, higher energy bills, or if you haven't had them cleaned in over 5 years.",
+  },
+  {
+    question: "What is included in your duct cleaning service?",
+    answer: "Our comprehensive service includes cleaning of all supply and return ducts, main trunk lines, vents, registers, and the HVAC unit itself. We use professional-grade equipment and follow NADCA guidelines.",
+  },
+  {
+    question: "Do you offer any guarantees on your work?",
+    answer: "Yes, we provide a 100% satisfaction guarantee on all our services. If you're not completely satisfied with our work, we'll return to address any concerns at no additional cost.",
   },
 ];
 
@@ -124,6 +143,23 @@ function HomePage() {
     severity: 'success' as 'success' | 'error'
   });
   const [isLoading, setIsLoading] = React.useState(false);
+  const [showScrollTop, setShowScrollTop] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -167,24 +203,23 @@ function HomePage() {
       <Stack minHeight="100vh">
         <Navbar />
         
-        {/* Hero Section */}
+        {/* Hero Section - Full Width */}
         <Stack id="hero">
           <Stack sx={{
-            backgroundImage: 'url(/hero.jpeg)',
+            backgroundImage: 'linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(/hero.jpeg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
-          height={{ xs: 800, sm: 600, md: 800 }}
+          height={{ xs: 1000, sm: 600, md: 800 }}
           width='100%'
           component={motion.div}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}>
             <Stack sx={{
-                  backdropFilter: 'blur(3px)',
-                  background: 'rgba(0,0,0,0.7)',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+              alignItems: 'center',
+              justifyContent: 'center',
+              backdropFilter: 'blur(5px)',
             }}
             height='100%'
             width='100%'
@@ -196,7 +231,8 @@ function HomePage() {
                     variant={isMobile ? 'h6' : 'h5'}
                     color='#00cc00'
                     sx={{
-                      fontWeight: 600,
+                      fontFamily: 'Montserrat',
+                      fontWeight: 700,
                       textAlign: 'center',
                       textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
                       textTransform: 'uppercase',
@@ -206,12 +242,12 @@ function HomePage() {
                   >
                     Alpha Duct Cleaning
                   </Typography>
-                  {/* <img src="/logo.png" height={100} /> */}
                   <Typography 
                     variant={isMobile ? 'h3' : 'h2'}
                     color='white'
                     sx={{
-                      fontWeight: 700,
+                      fontFamily: 'Montserrat',
+                      fontWeight: 800,
                       textAlign: 'center',
                       lineHeight: 1.2,
                       textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
@@ -223,617 +259,496 @@ function HomePage() {
                   </Typography>
                 </Stack>
 
-                {/* Feature Cards */}
-                <Stack 
-                  direction={{ xs: 'column', sm: 'row' }} 
-                  spacing={2}
-                  sx={{ width: '100%' }}
-                  component={motion.div}
-                  variants={staggerContainer}
-                  initial="initial"
-                  animate="animate"
-                >
-                  {[
-                    { title: '24/7 Service', icon: '🕒', desc: 'Emergency support available', href: '#contact' },
-                    { title: 'Licensed Experts', icon: '👨‍🔧', desc: 'Fully qualified technicians' },
-                    { title: 'Best Price', icon: '💰', desc: 'Competitive market rates' }
-                  ].map((item) => (
-                    <Stack
-                      key={item.title}
-                      component={motion.a}
-                      href={item.href}
-                      variants={fadeInUp}
-                      whileHover={{ scale: 1.05 }}
-                      sx={{
-                        bgcolor: 'rgba(255,255,255,0.1)',
-                        backdropFilter: 'blur(10px)',
-                        p: { xs: 2, sm: 3 },
-                        borderRadius: 2,
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        flex: 1,
-                        transition: 'transform 0.2s',
-                        '&:hover': {
-                          bgcolor: 'rgba(255,255,255,0.15)',
-                        },
-                        textDecoration: 'inherit'
-                      }}
-                      spacing={0.5}
-                    >
-                      <Typography fontSize={{ xs: '1.5rem', sm: '2rem' }}>{item.icon}</Typography>
-                      <Typography color="white" variant={isMobile ? 'subtitle1' : 'h6'} fontWeight={600}>
-                        {item.title}
-                      </Typography>
-                      <Typography color="grey.300" variant={isMobile ? 'body2' : 'body1'}>
-                        {item.desc}
-                      </Typography>
-                    </Stack>
-                  ))}
-                </Stack>
-
-                {/* CTA Button */}
-                <Button
-                  component={motion.a}
-                  href="tel:61467788814"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  variant="contained" 
-                  size={isMobile ? 'large' : 'large'}
-                  sx={{
-                    mt: { xs: 2, sm: 4 },
-                    py: { xs: 1.5, sm: 2 },
-                    px: { xs: 4, sm: 6 },
-                    fontSize: { xs: '1rem', sm: '1.1rem' },
-                    borderRadius: 2,
-                    alignSelf: 'center',
-                    textTransform: 'none',
-                    boxShadow: '0 4px 14px rgba(0,0,0,0.4)',
-                    width: { xs: '100%', sm: 'auto' }
-                  }}
-                >
-                  Call Now for Free Quote
-                </Button>
+                {/* Feature Cards - Contained Width */}
+                <Container maxWidth="lg" sx={{ mt: { xs: 4, md: 8 } }}>
+                  <Stack 
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={2}
+                    component={motion.div}
+                    variants={staggerContainer}
+                    initial="initial"
+                    animate="animate"
+                  >
+                    {[
+                      { title: '24/7 Service', icon: '🕒', desc: 'Emergency support available', href: '#contact' },
+                      { title: 'Licensed Experts', icon: '👨‍🔧', desc: 'Fully qualified technicians', href: undefined },
+                      { title: 'Best Price', icon: '💰', desc: 'Competitive market rates', href: undefined }
+                    ].map((item: { title: string; icon: string; desc: string; href?: string }) => (
+                      <Stack
+                        key={item.title}
+                        component={motion.a}
+                        href={item.href}
+                        variants={fadeInUp}
+                        whileHover={{ scale: 1.05 }}
+                        sx={{
+                          bgcolor: 'rgba(200,200,200,0.95)',
+                          backdropFilter: 'blur(10px)',
+                          p: { xs: 3, sm: 4 },
+                          borderRadius: '16px',
+                          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                          flex: 1,
+                          transition: 'all 0.3s ease',
+                          '&:hover': {
+                            bgcolor: 'rgba(255,255,255,1)',
+                            boxShadow: '0 12px 40px rgba(46,92,255,0.2)',
+                          },
+                          textDecoration: 'none'
+                        }}
+                        spacing={2}
+                      >
+                        <Typography fontSize={{ xs: '1.5rem', sm: '2rem' }}>{item.icon}</Typography>
+                        <Typography color="text.primary" variant={isMobile ? 'subtitle1' : 'h6'} fontWeight={600}>
+                          {item.title}
+                        </Typography>
+                        <Typography color="text.secondary" variant={isMobile ? 'body2' : 'body1'}>
+                          {item.desc}
+                        </Typography>
+                      </Stack>
+                    ))}
+                  </Stack>
+                </Container>
               </Stack>
             </Stack>
           </Stack>
         </Stack>
 
-        {/* Why Choose Us Section */}
-        <Box sx={{
-          background: 'url(/background.png) no-repeat center center / cover'
-        }} id='about'>
-          <Container sx={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center', 
-            height: '100%', 
-            width: '100%', 
-            padding: { xs: 3, sm: 6, md: 10 } 
-          }} >
-            <Typography 
-              component={motion.h2}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              variant={isMobile ? 'h3' : 'h2'}
-              sx={{ 
-                mb: { xs: 3, sm: 6 },
-                color: '#2d2657',
-                fontWeight: 'bold',
-                textAlign: 'center'
-              }}
-            >
-              Breathe Easy, Know Your Home is in Good Hands
-            </Typography>
-            
-            <Typography 
-              component={motion.p}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              variant="body1" 
-              sx={{ 
-                mb: 4, 
-                textAlign: 'center',
-                px: { xs: 2, sm: 4 }
-              }}
-            >
-              Alpha Duct Cleaning is your one-stop shop for all your air duct cleaning needs. We understand that your home is your sanctuary, and we take your air quality seriously. Our team of experienced technicians will clean your air ducts thoroughly and efficiently, leaving you with peace of mind knowing that your home is in good hands.
-            </Typography>
-
-            <Stack 
-              component={motion.div}
-              variants={staggerContainer}
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true }}
-              direction={{ xs: 'column', md: 'row' }} 
-              spacing={4}
-              flexWrap="wrap"
-              sx={{ mt: 4 }}
-              alignItems="center"
-              justifyContent="center"
-            >
+        {/* Stats Section - Full Width with Diagonal Cut */}
+        <Box 
+          sx={{
+            position: 'relative',
+            bgcolor: '#cee8fa',
+            py: { xs: 8, md: 12 },
+            mt: -6
+          }}
+          id="about"
+        >
+          <Container maxWidth="lg">
+            <Grid container spacing={4}>
               {stats.map((stat) => (
-                <Box 
-                  component={motion.div}
-                  variants={fadeInUp}
-                  whileHover={{ scale: 1.05 }}
-                  key={stat.label} 
-                  sx={{ 
-                    flex: { xs: '1 1 100%', md: '1 1 20%' },
-                    bgcolor: 'background.paper',
-                    py: { xs: 3, sm: 4 },
-                    px: 1,
-                    borderRadius: 2,
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
-                    textAlign: 'center',
-                    height: { xs: 'auto', md: '350px' }, // Added fixed height
-                    display: 'flex',
-                    flexDirection: 'column'
-                  }}
-                >
-                  <Typography 
-                    variant={isMobile ? 'h6' : 'h5'}
-                    color="primary.700" 
-                    sx={{ mb: 1 }}
+                <Grid item xs={12} md={3} key={stat.label}>
+                  <Stack
+                    component={motion.div}
+                    variants={fadeInUp}
+                    whileHover={{ scale: 1.05 }}
+                    sx={{
+                      bgcolor: 'white',
+                      p: 4,
+                      borderRadius: '24px',
+                      boxShadow: '0 12px 40px rgba(0,0,0,0.1)',
+                      height: '100%',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '4px',
+                        background: 'linear-gradient(90deg, #2E5CFF, #FF6B4A)',
+                      }
+                    }}
                   >
-                    {stat.label}
-                  </Typography>
-                  <Typography 
-                    variant="body1" 
-                    color="text.secondary"
-                    mt='auto'
-                    align='center'
-                  >
-                    {stat.description}
-                  </Typography>
-                </Box>
+                    <Typography variant="h3" color="primary.main" fontWeight="bold" mb={2}>
+                      {stat.value}
+                    </Typography>
+                    <Typography variant="h6" color="text.primary" mb={1}>
+                      {stat.label}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {stat.description}
+                    </Typography>
+                  </Stack>
+                </Grid>
               ))}
-            </Stack>
+            </Grid>
           </Container>
         </Box>
 
-        {/* Services Section */}
-        <Box sx={{
-          position: 'relative',
-          bgcolor: 'white',
-          backgroundImage: 'url(/bg.jpg)',
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          backgroundAttachment: 'fixed',
-          width: '100%'
+        {/* Services Section - Alternating Layout */}
+        <Box sx={{ 
+          py: { xs: 8, md: 12 },
+          bgcolor: 'white'
         }} id="services">
-          <Stack py={{ xs: 4, sm: 6, md: 8 }} px={{ xs: 2, sm: 4 }} alignItems="center" sx={{
-            bgcolor: 'rgba(0,0,0,0.5)',
-            backdropFilter: 'blur(10px)'
-          }}>
+          <Container maxWidth="lg">
             <Typography 
-              component={motion.h3}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              variant={isMobile ? 'h4' : 'h3'} 
-              mb={{ xs: 4, sm: 6 }}
+              variant="h2"
               textAlign="center"
               sx={{
-                color: 'white',
-                fontWeight: 700,
-                textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                fontFamily: 'Montserrat',
+                fontWeight: 800,
+                background: 'linear-gradient(135deg, #2E5CFF, #FF6B4A)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 8
               }}
             >
               Our Services
             </Typography>
-            <Container maxWidth="lg">
-              <Stack 
-                component={motion.div}
-                variants={staggerContainer}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true }}
-                direction={{ xs: 'column', md: 'row' }}
-                flexWrap="wrap"
-                gap={2}
-                sx={{ width: '100%' }}
-              >
-                {services.map((service) => (
-                  <Stack 
-                    component={motion.div}
-                    variants={fadeInUp}
-                    whileHover={{ scale: 1.02 }}
-                    key={service.title}
-                    onClick={() => navigate(`/service/${encodeURIComponent(service.title.toLowerCase().replace(/ /g, '-'))}`)}
-                    sx={{
-                      width: { xs: '100%', md: 'calc(50% - 16px)' },
-                      height: '120px',
-                      borderRadius: 2,
-                      overflow: 'hidden',
-                      position: 'relative',
-                      cursor: 'pointer',
-                      border: '1px solid rgba(0,0,0,0.12)',
-                      background: 'url(/background.png) no-repeat center center / cover',
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                      }
-                    }}
-                    direction="row"
-                    alignItems="center"
-                    spacing={3}
-                    p={3}
-                  >
-                    <Box
-                      sx={{
-                        width: '80px',
-                        height: '80px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Box
-                        component="img"
-                        src={service.image}
-                        alt={service.title}
-                        sx={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'contain',
-                          mixBlendMode: 'multiply'
-                        }}
-                      />
-                    </Box>
-                    <Stack spacing={1} flex={1}>
-                      <Typography 
-                        variant="h5" 
-                        sx={{ 
-                          color: 'text.primary',
-                          fontWeight: 500,
-                          fontSize: { xs: '1.1rem', sm: '1.5rem' }
-                        }}
-                      >
-                        {service.title}
-                      </Typography>
-                      {!isMobile && <Typography 
-                        variant="body2" 
-                        color="text.secondary"
-                        sx={{
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {service.description}
-                      </Typography>}
-                    </Stack>
-                  </Stack>
-                ))}
-              </Stack>
-            </Container>
-          </Stack>
-        </Box>
-
-        {/* Our Work/Testimonials Section */}
-        <Box sx={{
-          background: 'url(/background.png) no-repeat center center / cover',
-          width: '100%'
-        }}>
-          <Stack py={{ xs: 4, sm: 6, md: 8 }} px={{ xs: 2, sm: 4 }} alignItems="center">
-            <Typography 
-              component={motion.h3}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              variant={isMobile ? 'h4' : 'h3'}
-              mb={{ xs: 4, sm: 6 }}
-              textAlign="center"
-            >
-              Our Work
-            </Typography>
-            <Stack 
-              component={motion.div}
-              variants={staggerContainer}
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true }}
-              direction={{ xs: 'column', md: 'row' }} 
-              spacing={4}
-              justifyContent="center"
-              width="100%"
-            >
-              {testimonials.map((testimonial, index) => (
-                <Stack 
+            
+            <Stack spacing={8}>
+              {services.map((service, index) => (
+                <Stack
+                  key={service.title}
+                  direction={{ xs: 'column', md: index % 2 === 0 ? 'row' : 'row-reverse' }}
+                  spacing={4}
+                  alignItems="center"
                   component={motion.div}
                   variants={fadeInUp}
-                  whileHover={{ scale: 1.05 }}
-                  key={index}
+                  whileHover={{ y: -10 }}
                   sx={{
-                    bgcolor: 'primary.50',
-                    p: { xs: 3, sm: 4 },
-                    borderRadius: 2,
-                    width: { xs: '100%', md: '30%' },
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
                   }}
-                  spacing={2}
-                  alignItems='center'
+                  onClick={() => navigate(`/service/${encodeURIComponent(service.title.toLowerCase().replace(/ /g, '-'))}`)}
                 >
-                  <Rating value={testimonial.rating} readOnly size={isMobile ? 'small' : 'medium'} />
-                  <Typography variant="body1">{testimonial.comment}</Typography>
-                  <Typography variant="subtitle2" color="primary.700">
-                    - {testimonial.name}
-                  </Typography>
-                </Stack>
-              ))}
-            </Stack>
-          </Stack>
-        </Box>
-
-        {/* Before/After Section */}
-        <Box sx={{ bgcolor: 'background.default' }}>
-          <Container maxWidth="lg">
-            <Stack py={{ xs: 4, sm: 6, md: 8 }} px={{ xs: 2, sm: 4 }}>
-              <Typography 
-                component={motion.h3}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                variant={isMobile ? 'h4' : 'h3'}
-                mb={{ xs: 4, sm: 6 }}
-                textAlign="center"
-              >
-                Before & After Results
-              </Typography>
-              <Stack 
-                component={motion.div}
-                variants={staggerContainer}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true }}
-                direction={{ xs: 'column', md: 'row' }}
-                spacing={0}
-                flexWrap="wrap"
-                justifyContent="center"
-                alignItems="center"
-              >
-                {beforeAfterImages.map((item, index) => (
-                  <Stack 
-                    key={index}
-                    component={motion.div}
-                    variants={fadeInUp}
-                    spacing={2}
-                    my={1}
+                  <Box
                     sx={{
-                      width: { xs: '60%', md: '45%' },
-                      aspectRatio: '1/1',
+                      width: { xs: '100%', md: '50%' },
+                      height: '400px',
+                      borderRadius: '24px',
+                      overflow: 'hidden',
+                      position: 'relative'
                     }}
                   >
-                    <ReactCompareSlider
-                      itemOne={<ReactCompareSliderImage src={item.before} alt="Before" style={{ objectFit: 'cover' }} />}
-                      itemTwo={<ReactCompareSliderImage src={item.after} alt="After" style={{ objectFit: 'cover' }} />}
-                      style={{
-                        height: '100%',
+                    <Box
+                      component="img"
+                      src={service.banner}
+                      sx={{
                         width: '100%',
-                        borderRadius: '8px',
-                        overflow: 'hidden'
+                        height: '100%',
+                        objectFit: 'cover',
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                          transform: 'scale(1.05)'
+                        }
                       }}
                     />
+                  </Box>
+                  <Stack spacing={3} sx={{ width: { xs: '100%', md: '50%' } }} justifyContent="center" alignItems="center">
+                    <Typography variant="h3" fontWeight="bold">
+                      {service.title}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                      {service.description}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      size="large"
+                      sx={{
+                        borderRadius: '12px',
+                        px: 4,
+                        py: 1.5
+                      }}
+                    >
+                      Learn More
+                    </Button>
                   </Stack>
-                ))}
-              </Stack>
+                </Stack>
+              ))}
             </Stack>
           </Container>
         </Box>
 
-        {/* FAQ Section */}
-        <Box sx={{ bgcolor: 'white' }} id="faq">
+        {/* Before/After Section */}
+        <Box sx={{ 
+          py: { xs: 8, md: 12 }, 
+          bgcolor: '#cee8fa'
+        }}>
           <Container maxWidth="lg">
-            <Stack py={{ xs: 4, sm: 6, md: 8 }} px={{ xs: 2, sm: 4 }}>
-              <Typography 
-                component={motion.h3}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                variant={isMobile ? 'h4' : 'h3'}
-                mb={{ xs: 4, sm: 6 }}
-                textAlign="center"
-              >
-                Frequently Asked Questions
-              </Typography>
+            <Typography 
+              variant="h2"
+              textAlign="center"
+              sx={{
+                fontFamily: 'Montserrat',
+                fontWeight: 800,
+                background: 'linear-gradient(135deg, #2E5CFF, #FF6B4A)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 8
+              }}
+            >
+              Our Results
+            </Typography>
+            <Grid container spacing={4}>
+              {beforeAfterImages.map((image, index) => (
+                <Grid item xs={12} md={6} key={index}>
+                  <Card 
+                    component={motion.div}
+                    variants={fadeInUp}
+                    whileHover={{ y: -10 }}
+                    sx={{ 
+                      borderRadius: '24px',
+                      overflow: 'hidden',
+                      boxShadow: '0 12px 40px rgba(0,0,0,0.1)',
+                    }}
+                  >
+                    <ReactCompareSlider
+                      itemOne={<ReactCompareSliderImage src={image.before} alt="Before" />}
+                      itemTwo={<ReactCompareSliderImage src={image.after} alt="After" />}
+                      style={{ 
+                        height: '350px'
+                      }}
+                    />
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </Box>
+
+        {/* Testimonials Section */}
+        <Box sx={{ 
+          py: { xs: 8, md: 12 },
+          bgcolor: 'white'
+        }}>
+          <Container maxWidth="lg">
+            <Typography 
+              variant="h2"
+              textAlign="center"
+              sx={{
+                fontFamily: 'Montserrat',
+                fontWeight: 800,
+                background: 'linear-gradient(135deg, #2E5CFF, #FF6B4A)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 8
+              }}
+            >
+              What Our Clients Say
+            </Typography>
+            <Grid container spacing={4}>
+              {testimonials.map((testimonial, index) => (
+                <Grid item xs={12} md={4} key={index}>
+                  <Card
+                    component={motion.div}
+                    variants={fadeInUp}
+                    whileHover={{ y: -10 }}
+                    sx={{
+                      p: 4,
+                      height: '100%',
+                      borderRadius: '24px',
+                      boxShadow: '0 12px 40px rgba(0,0,0,0.1)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <Typography variant="h1" color="primary.main" sx={{ mb: 2, fontSize: '3rem' }}>"</Typography>
+                    <Typography variant="body1" sx={{ flex: 1, mb: 3 }}>{testimonial.comment}</Typography>
+                    <Stack spacing={1} justifyContent="center" alignItems="center">
+                      <Rating value={testimonial.rating} readOnly />
+                      <Typography variant="h6" fontWeight="bold">{testimonial.name}</Typography>
+                    </Stack>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </Box>
+
+        {/* FAQ Section */}
+        <Box sx={{ 
+          py: { xs: 8, md: 12 }, 
+          bgcolor: '#cee8fa'
+        }} id="faq">
+          <Container maxWidth="lg">
+            <Typography 
+              variant="h2"
+              textAlign="center"
+              sx={{
+                fontFamily: 'Montserrat',
+                fontWeight: 800,
+                background: 'linear-gradient(135deg, #2E5CFF, #FF6B4A)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 8
+              }}
+            >
+              Frequently Asked Questions
+            </Typography>
+            <Stack spacing={2} maxWidth="800px" mx="auto">
               {faqs.map((faq, index) => (
-                <Accordion 
-                  component={motion.div}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+                <Accordion
                   key={index}
+                  component={motion.div}
+                  variants={fadeInUp}
+                  sx={{
+                    borderRadius: '16px !important',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                    '&:before': { display: 'none' },
+                    mb: 2,
+                  }}
                 >
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant={isMobile ? 'subtitle1' : 'h6'}>{faq.question}</Typography>
+                    <Typography variant="h6" fontWeight="600">{faq.question}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>{faq.answer}</Typography>
+                    <Typography align='left'>{faq.answer}</Typography>
                   </AccordionDetails>
                 </Accordion>
               ))}
             </Stack>
           </Container>
         </Box>
-        
-        
 
-        {/* Contact Us Section */}
-        <Box sx={{
+        {/* Contact Section */}
+        <Box id="contact" sx={{ 
+          py: { xs: 8, md: 12 },
+          bgcolor: 'white',
           position: 'relative',
-          overflow: 'hidden',
-          background: 'url(/background.png) no-repeat center center / cover',
-        }} id="contact">
-          <Stack 
-            py={{ xs: 4, sm: 6, md: 8 }} 
-            px={{ xs: 2, sm: 4 }} 
-            alignItems="center" 
-            justifyContent='center' 
-            spacing={{ xs: 4, md: 5 }} 
-            direction={{ xs: 'column', md: 'row' }} 
-            width='100%'
-          >
-            <Box
-              component={motion.div}
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            opacity: 0.05,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }
+        }}>
+          <Container maxWidth="lg" sx={{ position: 'relative' }}>
+            <Typography 
+              variant="h2"
               sx={{
-                textDecoration: 'none',
-                overflow: 'hidden',
-                maxWidth: '100%',
-                width: '1000px',
-                height: { xs: '300px', sm: '400px', md: '500px' }
+                fontFamily: 'Montserrat',
+                fontWeight: 800,
+                background: 'linear-gradient(135deg, #2E5CFF, #FF6B4A)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 4
               }}
             >
-              <Box
-                id="canvas-for-googlemap"
-                sx={{
-                  height: '100%',
-                  width: '100%',
-                  maxWidth: '100%'
-                }}
-              >
-                <iframe
-                  style={{
-                    height: '100%',
+              Get in Touch
+            </Typography>
+            
+            <Grid container spacing={6}>
+              {/* Left side - Map */}
+              <Grid item xs={12} md={6}>
+                <Box
+                  sx={{
                     width: '100%',
-                    border: 0
-                  }}
-                  frameBorder="0"
-                  src="https://www.google.com/maps/embed/v1/place?q=30 Medway Rd Caraigieburn, Melbourne VIC 3000&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
-                />
-              </Box>
-            </Box>
-            <Stack 
-              component={motion.div}
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              height={{ xs: 'auto', md: 500 }}
-              maxWidth="600px" 
-              width="100%" 
-              spacing={3}
-              justifyContent='center'
-              p={{ xs: 3, sm: 4 }}
-              sx={{
-                position: 'relative',
-                backgroundColor: 'rgba(255,255,255,0.5)',
-                backdropFilter: 'blur(2px)'
-              }}
-            >
-              <Typography variant={isMobile ? 'h5' : 'h4'} textAlign="center">
-                Get in Touch with Our Duct Cleaning Experts Today!
-              </Typography>
-              
-              <Stack component="form" spacing={3} onSubmit={handleSubmit}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Name"
-                  variant="outlined"
-                  name="name"
-                />
-                <TextField
-                  fullWidth
-                  label="Phone Number (Optional)"
-                  variant="outlined"
-                  name="phone"
-                />
-                <TextField
-                  required
-                  fullWidth
-                  label="Message"
-                  variant="outlined"
-                  name="message"
-                  multiline
-                  rows={4}
-                />
-                <Button 
-                  component={motion.button}
-                  type="submit"
-                  whileHover={{ scale: isLoading ? 1 : 1.05 }}
-                  whileTap={{ scale: isLoading ? 1 : 0.95 }}
-                  variant="contained" 
-                  size={isMobile ? 'medium' : 'large'}
-                  disabled={isLoading}
-                  sx={{ 
-                    py: { xs: 1.5, sm: 2 },
-                    fontSize: { xs: '1rem', sm: '1.1rem' },
-                    textTransform: 'none'
+                    height: '100%',
+                    minHeight: '500px',
+                    borderRadius: '24px',
+                    overflow: 'hidden',
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.1)',
                   }}
                 >
-                  {isLoading ? (
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <CircularProgress size={20} color="inherit" />
-                      <span>Sending...</span>
-                    </Stack>
-                  ) : (
-                    'Send Message'
-                  )}
-                </Button>
-              </Stack>
-            </Stack>
-          </Stack>
+                  <iframe 
+                    src="https://www.google.com/maps/embed/v1/place?q=30+Medway+Rd+Caraigieburn,+Melbourne+VIC+3000&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
+                    style={{
+                      border: 0,
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </Box>
+              </Grid>
+
+              {/* Right side - Contact Form */}
+              <Grid item xs={12} md={6}>
+                <Card
+                  component="form"
+                  onSubmit={handleSubmit}
+                  sx={{
+                    p: 4,
+                    height: '100%',
+                    borderRadius: '24px',
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.1)',
+                  }}
+                >
+                  <Stack spacing={3}>
+                    <Typography variant="h4" fontWeight="bold">Send us a message</Typography>
+                    <TextField
+                      name="name"
+                      label="Your Name"
+                      required
+                      fullWidth
+                    />
+                    <TextField
+                      name="phone"
+                      label="Phone Number"
+                      required
+                      fullWidth
+                    />
+                    <TextField
+                      name="message"
+                      label="Message"
+                      multiline
+                      rows={4}
+                      required
+                      fullWidth
+                    />
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      size="large"
+                      disabled={isLoading}
+                      sx={{ borderRadius: '12px', py: 1.5 }}
+                    >
+                      {isLoading ? <CircularProgress size={24} /> : 'Send Message'}
+                    </Button>
+                  </Stack>
+                </Card>
+              </Grid>
+            </Grid>
+          </Container>
         </Box>
 
-        <Snackbar 
-          open={snackbar.open} 
-          autoHideDuration={6000} 
-          onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
-        >
-          <Alert 
-            onClose={() => setSnackbar(prev => ({ ...prev, open: false }))} 
-            severity={snackbar.severity}
-            sx={{ width: '100%' }}
+        <Fade in={showScrollTop}>
+          <Box
+            onClick={scrollToTop}
+            role="presentation"
+            sx={{
+              position: 'fixed',
+              bottom: 24,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 2,
+            }}
           >
+            <Fab
+              color="primary"
+              size="large"
+              aria-label="scroll back to top"
+              sx={{
+                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                '&:hover': {
+                  transform: 'scale(1.1)',
+                },
+                transition: 'transform 0.2s',
+              }}
+            >
+              <KeyboardArrowUp />
+            </Fab>
+          </Box>
+        </Fade>
+
+        <Footer />
+
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={6000}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+        >
+          <Alert severity={snackbar.severity} sx={{ width: '100%' }}>
             {snackbar.message}
           </Alert>
         </Snackbar>
-
-        <Footer />
       </Stack>
     </ThemeProvider>
-  )
+  );
 }
-
-const theme = extendTheme({
-  colorSchemes: {
-    light: {
-      palette:{
-      primary: {
-        main: '#1976d2',
-        light: '#42a5f5',
-        dark: '#1565c0',
-        contrastText: '#fff',
-      },
-      secondary: {
-        main: '#9c27b0',
-        light: '#ba68c8', 
-        dark: '#7b1fa2',
-        contrastText: '#fff',
-      },
-      background: {
-        default: '#fff',
-        paper: '#fff',
-      },
-      text: {
-        primary: 'rgba(0, 0, 0, 0.87)',
-        secondary: 'rgba(0, 0, 0, 0.6)',
-      },
-    }}}
-});
-
 
 function ServicePage() {
   const navigate = useNavigate();
   const { serviceId } = useParams();
   const service = services.find(s => s.title.toLowerCase().replace(/ /g, '-') === serviceId);
+  const theme = useTheme();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -842,99 +757,236 @@ function ServicePage() {
   if (!service) {
     return <div>Service not found</div>;
   }
+
   return (
     <ThemeProvider defaultMode='light' theme={theme}>
       <Stack minHeight="100vh">
         <Navbar />
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-          <Typography variant="h1" sx={{ mb: 3, fontSize: { xs: '2.5rem', sm: '3.5rem' } }}>{service.title}</Typography>
-          <Box
-            component="img"
-            src={service.banner}
-            alt={service.title}
-            sx={{
-              width: '100%',
-              height: '400px',
-              objectFit: 'cover',
-              borderRadius: 2,
-              mb: 3
-            }}
-          />
-          {service.body && (
-            <Box sx={{ mt: 3 }}>
-              <Markdown content={service.body} />
-            </Box>
-          )}
+        
+        {/* Hero Section */}
+        <Box
+          sx={{
+            backgroundImage: `linear-gradient(135deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${service.banner})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            position: 'relative',
+            height: '80vh',
+            width: '100%',
+            overflow: 'hidden',
+            backgroundColor: '#000',
+          }}
+        >
           
-          {/* Added CTA Section */}
-          <Box
+          {/* Text Overlay */}
+          <Container 
             sx={{
-              mt: 6,
-              p: 4,
-              bgcolor: 'primary.main',
-              borderRadius: 2,
-              textAlign: 'center',
-              color: 'white',
+              height: '100%',
+              position: 'relative',
+              zIndex: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
             }}
           >
-            <Typography variant="h4" sx={{ mb: 2 }}>
-              Ready to Improve Your Air Quality?
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 4 }}>
-              Get a free quote for your {service.title.toLowerCase()} service today!
-            </Typography>
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              spacing={2}
-              justifyContent="center"
-            >
-              <Button
-                href="tel:61467788814"
-                variant="contained"
-                size="large"
+            <Stack maxWidth="1000px" alignItems="center" justifyContent="center">
+              <Typography
+                variant="h1"
                 sx={{
-                  bgcolor: 'white',
-                  color: 'primary.main',
-                  '&:hover': {
-                    bgcolor: 'grey.100',
-                  },
-                  px: 4,
-                  py: 1.5,
-                }}
-              >
-                Call Now
-              </Button>
-              <Button
-                onClick={() => {
-                  navigate('/');
-                  setTimeout(() => {
-                    const element = document.getElementById('contact');
-                    if (element) {
-                      const yOffset = -65; // Account for fixed header
-                      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                      window.scrollTo({ top: y, behavior: 'smooth' });
-                    }
-                  }, 100); // Small delay to ensure navigation completes
-                }}
-                variant="outlined"
-                size="large"
-                sx={{
-                  borderColor: 'white',
                   color: 'white',
-                  '&:hover': {
-                    borderColor: 'grey.100',
-                    bgcolor: 'rgba(255,255,255,0.1)',
-                  },
-                  px: 4,
-                  py: 1.5,
+                  fontWeight: 700,
+                  fontSize: { xs: '2.5rem', sm: '4rem', md: '5rem' },
+                  lineHeight: 1.2,
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                  mb: 3,
                 }}
               >
-                Contact Us
-              </Button>
+                {service.title}
+              </Typography>
+              
+              <Typography
+                variant="h5"
+                sx={{
+                  color: 'white',
+                  maxWidth: '600px',
+                  opacity: 0.9,
+                  mb: 4,
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+                  fontSize: { xs: '1rem', md: '1.5rem' },
+                }}
+              >
+                {service.description}
+              </Typography>
+
+              <Stack 
+                direction={{ xs: 'column', sm: 'row' }}
+                spacing={2}
+              >
+                <Button
+                  variant="contained"
+                  size="large"
+                  href="tel:0467788814"
+                  sx={{
+                    py: 2,
+                    px: 4,
+                    fontSize: '1.1rem',
+                    backgroundColor: '#2E5CFF',
+                    '&:hover': {
+                      backgroundColor: '#1E3DB2',
+                    },
+                  }}
+                >
+                  Call Now
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={() => {
+                    const element = document.getElementById('quote-form');
+                    element?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  sx={{
+                    py: 2,
+                    px: 4,
+                    fontSize: '1.1rem',
+                    borderColor: 'white',
+                    color: 'white',
+                    '&:hover': {
+                      borderColor: 'white',
+                      backgroundColor: 'rgba(255,255,255,0.1)',
+                    },
+                  }}
+                >
+                  Get a Free Quote
+                </Button>
+              </Stack>
             </Stack>
-          </Box>
+          </Container>
+        </Box>
+
+        {/* Main Content */}
+        <Container maxWidth="lg" sx={{ py: 8 }}>
+          <Grid container spacing={6}>
+            {/* Left Column - Main Content */}
+            <Grid item xs={12} md={8}>
+              <motion.div
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                <Card
+                  elevation={0}
+                  sx={{
+                    bgcolor: 'background.paper',
+                    borderRadius: 4,
+                    px: 4,
+                    mb: 4,
+                  }}
+                >
+                  {service.body && (
+                    <Box sx={{ '& > *': { mb: 2 } }} >
+                      <Markdown content={service.body} />
+                    </Box>
+                  )}
+                </Card>
+              </motion.div>
+            </Grid>
+
+            {/* Right Column - CTA and Quick Info */}
+            <Grid item xs={12} md={4}>
+              <motion.div
+                initial={{ x: 30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                <Stack spacing={3} position="sticky" top={100}>
+                  {/* Quick Contact Card */}
+                  <Card
+                    sx={{
+                      p: 3,
+                      borderRadius: 4,
+                      background: 'linear-gradient(135deg, #2E5CFF, #1E3DB2)',
+                      color: 'white',
+                    }}
+                  >
+                    <Typography variant="h5" fontWeight="bold" mb={3}>
+                      Get a Free Quote
+                    </Typography>
+                    <Stack spacing={2}>
+                      <Button
+                        href="tel:61467788814"
+                        variant="contained"
+                        size="large"
+                        startIcon={<Call />}
+                        sx={{
+                          bgcolor: 'white',
+                          color: 'primary.main',
+                          '&:hover': { bgcolor: 'grey.100' },
+                        }}
+                      >
+                        Call: 0467 788 814
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          navigate('/');
+                          setTimeout(() => {
+                            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                          }, 100);
+                        }}
+                        variant="outlined"
+                        size="large"
+                        startIcon={<Email />}
+                        sx={{
+                          borderColor: 'white',
+                          color: 'white',
+                          '&:hover': {
+                            borderColor: 'grey.100',
+                            bgcolor: 'rgba(255,255,255,0.1)',
+                          },
+                        }}
+                      >
+                        Send Message
+                      </Button>
+                    </Stack>
+                  </Card>
+
+                  {/* Why Choose Us Card */}
+                  <Card
+                    sx={{
+                      p: 3,
+                      borderRadius: 4,
+                      bgcolor: 'background.paper',
+                    }}
+                  >
+                    <Typography variant="h6" fontWeight="bold" mb={2}>
+                      Why Choose Us
+                    </Typography>
+                    <Stack spacing={2}>
+                      {[
+                        { icon: '🏆', text: 'Licensed & Insured' },
+                        { icon: '⚡', text: 'Same Day Service' },
+                        { icon: '💯', text: 'Satisfaction Guaranteed' },
+                        { icon: '', text: 'Competitive Pricing' },
+                      ].map((item, index) => (
+                        <Stack
+                          key={index}
+                          direction="row"
+                          spacing={2}
+                          alignItems="center"
+                        >
+                          <Typography fontSize="1.5rem">{item.icon}</Typography>
+                          <Typography>{item.text}</Typography>
+                        </Stack>
+                      ))}
+                    </Stack>
+                  </Card>
+                </Stack>
+              </motion.div>
+            </Grid>
+          </Grid>
         </Container>
-        
+
         <Footer />
       </Stack>
     </ThemeProvider>
