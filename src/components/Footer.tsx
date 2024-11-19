@@ -15,13 +15,24 @@ export function Footer() {
               Professional air duct cleaning services in Melbourne. 
                 Committed to improving your indoor air quality.
               </Typography>
+              <Stack direction="row" spacing={2} sx={{ mt: 1 }} alignItems='center' justifyContent='center'>
+                <Box component="a" href="https://facebook.com/alphaduct" target="_blank" rel="noopener" sx={{ color: 'white', '&:hover': { color: 'primary.main' } }}>
+                  <Box component="img" src="/facebook.png" alt="Facebook" sx={{ width: 24, height: 24 }} />
+                </Box>
+                <Box component="a" href="https://instagram.com/alphaduct" target="_blank" rel="noopener" sx={{ color: 'white', '&:hover': { color: 'primary.main' } }}>
+                  <Box component="img" src="/instagram.png" alt="Instagram" sx={{ width: 24, height: 24 }} />
+                </Box>
+                <Box component="a" href="https://linkedin.com/company/alphaduct" target="_blank" rel="noopener" sx={{ color: 'white', '&:hover': { color: 'primary.main' } }}>
+                  <Box component="img" src="/youtube.png" alt="LinkedIn" sx={{ width: 24, height: 24 }} />
+                </Box>
+              </Stack>
             </Stack>
           </Grid>
           <Grid item xs={12} md={4}>
             <Stack spacing={isMobile ? 1 : 2}>
               <Typography variant={isMobile ? 'subtitle1' : 'h6'}>Contact Info</Typography>
-              <Typography variant="body2">Phone: (61) 467 788 814</Typography>
-              <Typography variant="body2">Email: info@alphaduct.com.au</Typography>
+              <Typography variant="body2" component='a' href='tel:61467788814'>Phone: (61) 467 788 814</Typography>
+              <Typography variant="body2" component='a' href='mailto:info@alphaduct.com.au'>Email: info@alphaduct.com.au</Typography>
               <Typography variant="body2">
                 Address: 30 Medway Rd Caraigieburn, Melbourne VIC 3000
               </Typography>

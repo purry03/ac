@@ -1,7 +1,7 @@
-import { AppBar, Button, Stack, Toolbar, IconButton, Drawer, useMediaQuery, useTheme } from '@mui/material';
+import { AppBar, Button, Stack, Toolbar, IconButton, Drawer, useMediaQuery, useTheme, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const navItems = [
   { label: 'Home', href: '#hero' },
@@ -71,7 +71,9 @@ export function Navbar() {
       }}
     >
       <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <img src="/logo.png" height={40} />
+        <Box component={Link} to="/">
+          <img src="/logo.png" height={40} alt="Logo"/>
+        </Box>
         
         {isServicesPage ? (
           <Button 
@@ -149,6 +151,8 @@ export function Navbar() {
                     <Button 
                       variant="contained" 
                       color="primary"
+                      component="a"
+                      href="tel:61467788814"
                       fullWidth
                       sx={{
                         mt: 1,

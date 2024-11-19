@@ -105,7 +105,7 @@ const staggerContainer = {
 
 function App() {
   return (
-    <Router basename="/ac">
+    <Router>
       <Routes>
         <Route path="/" index element={<HomePage />} />
         <Route path="/service/:serviceId" element={<ServicePage />} />
@@ -234,13 +234,14 @@ function HomePage() {
                   animate="animate"
                 >
                   {[
-                    { title: '24/7 Service', icon: '🕒', desc: 'Emergency support available' },
+                    { title: '24/7 Service', icon: '🕒', desc: 'Emergency support available', href: '#contact' },
                     { title: 'Licensed Experts', icon: '👨‍🔧', desc: 'Fully qualified technicians' },
                     { title: 'Best Price', icon: '💰', desc: 'Competitive market rates' }
                   ].map((item) => (
                     <Stack
                       key={item.title}
-                      component={motion.div}
+                      component={motion.a}
+                      href={item.href}
                       variants={fadeInUp}
                       whileHover={{ scale: 1.05 }}
                       sx={{
@@ -591,7 +592,8 @@ function HomePage() {
                 direction={{ xs: 'column', md: 'row' }}
                 spacing={0}
                 flexWrap="wrap"
-                justifyContent="space-around"
+                justifyContent="center"
+                alignItems="center"
               >
                 {beforeAfterImages.map((item, index) => (
                   <Stack 
@@ -601,7 +603,7 @@ function HomePage() {
                     spacing={2}
                     my={1}
                     sx={{
-                      width: { xs: '100%', md: '45%' },
+                      width: { xs: '70%', md: '45%' },
                       aspectRatio: '1/1',
                     }}
                   >
@@ -828,6 +830,7 @@ const theme = extendTheme({
 
 
 function ServicePage() {
+  const navigate = useNavigate();
   const { serviceId } = useParams();
   const service = services.find(s => s.title.toLowerCase().replace(/ /g, '-') === serviceId);
 
@@ -901,7 +904,17 @@ function ServicePage() {
                 Call Now
               </Button>
               <Button
-                href='/#contact'
+                onClick={() => {
+                  navigate('/');
+                  setTimeout(() => {
+                    const element = document.getElementById('contact');
+                    if (element) {
+                      const yOffset = -65; // Account for fixed header
+                      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                      window.scrollTo({ top: y, behavior: 'smooth' });
+                    }
+                  }, 100); // Small delay to ensure navigation completes
+                }}
                 variant="outlined"
                 size="large"
                 sx={{
