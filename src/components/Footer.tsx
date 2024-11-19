@@ -52,7 +52,6 @@ export function Footer() {
                       sx={{ 
                         width: 28, 
                         height: 28,
-                        filter: 'brightness(0) invert(1)',
                         opacity: 0.9,
                         '&:hover': { opacity: 1 }
                       }} 
