@@ -31,8 +31,20 @@ export function Footer() {
           <Grid item xs={12} md={4}>
             <Stack spacing={isMobile ? 1 : 2}>
               <Typography variant={isMobile ? 'subtitle1' : 'h6'}>Contact Info</Typography>
-              <Typography variant="body2" component='a' href='tel:61467788814' sx={{textDecoration: 'inherit', color:'inherit'}}>Phone: (61) 467 788 814</Typography>
-              <Typography variant="body2" component='a' href='mailto:info@alphaduct.com.au' sx={{textDecoration: 'inherit', color:'inherit'}}>Email: info@alphaduct.com.au</Typography>
+              <Typography variant="body2" component='a' href='tel:61467788814' sx={{
+                color: 'white',
+                '&:hover': {
+                  color: 'primary.main',
+                  textDecoration: 'underline'
+                }
+              }}>Phone: (61) 467 788 814</Typography>
+              <Typography variant="body2" component='a' href='mailto:info@alphaduct.com.au' sx={{
+                color: 'white', 
+                '&:hover': {
+                  color: 'primary.main',
+                  textDecoration: 'underline'
+                }
+              }}>Email: info@alphaduct.com.au</Typography>
               <Typography variant="body2">
                 Address: 30 Medway Rd Caraigieburn, Melbourne VIC 3000
               </Typography>
