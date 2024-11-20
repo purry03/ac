@@ -809,7 +809,8 @@ function ServicePage() {
 
   return (
     <ThemeProvider defaultMode='light' theme={theme}>
-      <Stack minHeight="100vh">
+      <Stack minHeight="100vh" sx={{
+        }}>
         <Navbar />
         
         {/* Hero Section */}
@@ -918,7 +919,7 @@ function ServicePage() {
         </Box>
 
         {/* Main Content */}
-        <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Container maxWidth="lg" sx={{ py: 8 }} >
           <Grid container spacing={6}>
             {/* Left Column - Main Content */}
             <Grid item xs={12} md={8}>
