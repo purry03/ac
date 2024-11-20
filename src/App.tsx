@@ -6,7 +6,6 @@ import {
   Box, 
   Button, 
   Container,
-  extendTheme,
   Rating,
   Stack, 
   TextField, 
@@ -204,22 +203,23 @@ function HomePage() {
         <Navbar />
         
         {/* Hero Section - Full Width */}
-        <Stack id="hero">
+<Stack id="hero">
           <Stack sx={{
-            backgroundImage: 'linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(/hero.jpeg)',
+            backgroundImage: 'url(/hero.jpeg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
-          height={{ xs: 1000, sm: 600, md: 800 }}
+          height={{ xs: 800, sm: 600, md: 800 }}
           width='100%'
           component={motion.div}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}>
             <Stack sx={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              backdropFilter: 'blur(5px)',
+                  backdropFilter: 'blur(3px)',
+                  background: 'rgba(0,0,0,0.7)',
+                  alignItems: 'center',
+                  justifyContent: 'center'
             }}
             height='100%'
             width='100%'
@@ -231,8 +231,7 @@ function HomePage() {
                     variant={isMobile ? 'h6' : 'h5'}
                     color='#00cc00'
                     sx={{
-                      fontFamily: 'Montserrat',
-                      fontWeight: 700,
+                      fontWeight: 600,
                       textAlign: 'center',
                       textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
                       textTransform: 'uppercase',
@@ -242,12 +241,12 @@ function HomePage() {
                   >
                     Alpha Duct Cleaning
                   </Typography>
+                  {/* <img src="/logo.png" height={100} /> */}
                   <Typography 
                     variant={isMobile ? 'h3' : 'h2'}
                     color='white'
                     sx={{
-                      fontFamily: 'Montserrat',
-                      fontWeight: 800,
+                      fontWeight: 700,
                       textAlign: 'center',
                       lineHeight: 1.2,
                       textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
@@ -259,54 +258,73 @@ function HomePage() {
                   </Typography>
                 </Stack>
 
-                {/* Feature Cards - Contained Width */}
-                <Container maxWidth="lg" sx={{ mt: { xs: 4, md: 8 } }}>
-                  <Stack 
-                    direction={{ xs: 'column', sm: 'row' }}
-                    spacing={2}
-                    component={motion.div}
-                    variants={staggerContainer}
-                    initial="initial"
-                    animate="animate"
-                  >
-                    {[
-                      { title: '24/7 Service', icon: '🕒', desc: 'Emergency support available', href: '#contact' },
-                      { title: 'Licensed Experts', icon: '👨‍🔧', desc: 'Fully qualified technicians', href: undefined },
-                      { title: 'Best Price', icon: '💰', desc: 'Competitive market rates', href: undefined }
-                    ].map((item: { title: string; icon: string; desc: string; href?: string }) => (
-                      <Stack
-                        key={item.title}
-                        component={motion.a}
-                        href={item.href}
-                        variants={fadeInUp}
-                        whileHover={{ scale: 1.05 }}
-                        sx={{
-                          bgcolor: 'rgba(200,200,200,0.95)',
-                          backdropFilter: 'blur(10px)',
-                          p: { xs: 3, sm: 4 },
-                          borderRadius: '16px',
-                          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-                          flex: 1,
-                          transition: 'all 0.3s ease',
-                          '&:hover': {
-                            bgcolor: 'rgba(255,255,255,1)',
-                            boxShadow: '0 12px 40px rgba(46,92,255,0.2)',
-                          },
-                          textDecoration: 'none'
-                        }}
-                        spacing={2}
-                      >
-                        <Typography fontSize={{ xs: '1.5rem', sm: '2rem' }}>{item.icon}</Typography>
-                        <Typography color="text.primary" variant={isMobile ? 'subtitle1' : 'h6'} fontWeight={600}>
-                          {item.title}
-                        </Typography>
-                        <Typography color="text.secondary" variant={isMobile ? 'body2' : 'body1'}>
-                          {item.desc}
-                        </Typography>
-                      </Stack>
-                    ))}
-                  </Stack>
-                </Container>
+                {/* Feature Cards */}
+                <Stack 
+                  direction={{ xs: 'column', sm: 'row' }} 
+                  spacing={2}
+                  sx={{ width: '100%' }}
+                  component={motion.div}
+                  variants={staggerContainer}
+                  initial="initial"
+                  animate="animate"
+                >
+                  {[
+                    { title: '24/7 Service', icon: '🕒', desc: 'Emergency support available' },
+                    { title: 'Licensed Experts', icon: '👨‍🔧', desc: 'Fully qualified technicians' },
+                    { title: 'Best Price', icon: '💰', desc: 'Competitive market rates' }
+                  ].map((item) => (
+                    <Stack
+                      key={item.title}
+                      component={motion.div}
+                      variants={fadeInUp}
+                      whileHover={{ scale: 1.05 }}
+                      sx={{
+                        bgcolor: 'rgba(255,255,255,0.1)',
+                        backdropFilter: 'blur(10px)',
+                        p: { xs: 2, sm: 3 },
+                        borderRadius: 2,
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        flex: 1,
+                        transition: 'transform 0.2s',
+                        '&:hover': {
+                          bgcolor: 'rgba(255,255,255,0.15)',
+                        }
+                      }}
+                      spacing={0.5}
+                    >
+                      <Typography fontSize={{ xs: '1.5rem', sm: '2rem' }}>{item.icon}</Typography>
+                      <Typography color="white" variant={isMobile ? 'subtitle1' : 'h6'} fontWeight={600}>
+                        {item.title}
+                      </Typography>
+                      <Typography color="grey.300" variant={isMobile ? 'body2' : 'body1'}>
+                        {item.desc}
+                      </Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+
+                {/* CTA Button */}
+                <Button
+                  component={motion.a}
+                  href="tel:61467788814"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  variant="contained" 
+                  size={isMobile ? 'large' : 'large'}
+                  sx={{
+                    mt: { xs: 2, sm: 4 },
+                    py: { xs: 1.5, sm: 2 },
+                    px: { xs: 4, sm: 6 },
+                    fontSize: { xs: '1rem', sm: '1.1rem' },
+                    borderRadius: 2,
+                    alignSelf: 'center',
+                    textTransform: 'none',
+                    boxShadow: '0 4px 14px rgba(0,0,0,0.4)',
+                    width: { xs: '100%', sm: 'auto' }
+                  }}
+                >
+                  Call Now for Free Quote
+                </Button>
               </Stack>
             </Stack>
           </Stack>
@@ -323,6 +341,20 @@ function HomePage() {
           id="about"
         >
           <Container maxWidth="lg">
+          <Typography 
+              variant="h2"
+              textAlign="center"
+              sx={{
+                fontFamily: 'Montserrat',
+                fontWeight: 800,
+                background: 'linear-gradient(135deg, #2E5CFF, #FF6B4A)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 8
+              }}
+            >
+              Why Choose Us?
+            </Typography>
             <Grid container spacing={4}>
               {stats.map((stat) => (
                 <Grid item xs={12} md={3} key={stat.label}>
@@ -470,9 +502,9 @@ function HomePage() {
             >
               Our Results
             </Typography>
-            <Grid container spacing={4}>
+            <Grid container spacing={4} justifyContent="center" alignItems="center">
               {beforeAfterImages.map((image, index) => (
-                <Grid item xs={12} md={6} key={index}>
+                <Grid item xs={12} md={6} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
                   <Card 
                     component={motion.div}
                     variants={fadeInUp}
@@ -481,13 +513,14 @@ function HomePage() {
                       borderRadius: '24px',
                       overflow: 'hidden',
                       boxShadow: '0 12px 40px rgba(0,0,0,0.1)',
+                      width: '80%',
                     }}
                   >
                     <ReactCompareSlider
                       itemOne={<ReactCompareSliderImage src={image.before} alt="Before" />}
                       itemTwo={<ReactCompareSliderImage src={image.after} alt="After" />}
                       style={{ 
-                        height: '350px'
+                        height: '300px'
                       }}
                     />
                   </Card>
