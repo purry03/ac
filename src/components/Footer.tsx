@@ -40,6 +40,7 @@ export function Footer() {
                     rel="noopener"
                     sx={{
                       transition: 'transform 0.2s',
+                      mixBlendMode: 'exclusion',
                       '&:hover': {
                         transform: 'translateY(-3px)',
                       }
