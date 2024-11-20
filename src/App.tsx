@@ -209,7 +209,7 @@ function HomePage() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
-          height={{ xs: 800, sm: 600, md: 800 }}
+          height={{ xs: 1000, sm: 600, md: 800 }}
           width='100%'
           component={motion.div}
           initial={{ opacity: 0 }}
