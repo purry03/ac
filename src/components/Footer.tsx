@@ -29,11 +29,13 @@ export function Footer() {
               <Stack direction="row" spacing={2.5} sx={{ mt: 2 }} justifyContent="center">
                 {[
                   { icon: '/facebook.png', url: 'https://www.facebook.com/share/18N4jVT3Mp/', alt: 'Facebook' },
+                  { icon: '/instagram.png', url: '', alt: 'Instagram' },
+                  { icon: '/youtube.png', url: '', alt: 'Youtube' },
                 ].map((social) => (
                   <Box
                     key={social.alt}
                     component="a"
-                    href={social.url}
+                    href={social.url !== '' ? social.url : undefined}
                     target="_blank"
                     rel="noopener"
                     sx={{

@@ -1,4 +1,4 @@
-import { AppBar, Button, Stack, Toolbar, IconButton, Drawer, useMediaQuery, useTheme, Box, LinearProgress } from '@mui/material';
+import { AppBar, Button, Stack, Toolbar, IconButton, Drawer, useMediaQuery, useTheme, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect } from 'react';

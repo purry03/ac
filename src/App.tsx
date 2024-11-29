@@ -203,7 +203,7 @@ function HomePage() {
         <Navbar />
         
         {/* Hero Section - Full Width */}
-<Stack id="hero">
+        <Stack id="hero">
           <Stack sx={{
             backgroundImage: 'url(/hero.jpeg)',
             backgroundSize: 'cover',
@@ -269,7 +269,7 @@ function HomePage() {
                   animate="animate"
                 >
                   {[
-                    { title: '24/7 Service', icon: '🕒', desc: 'Emergency support available' },
+                    { title: '24/7 Service', icon: '🕒', desc: 'Emergency support available', href: "#contact" },
                     { title: 'Licensed Experts', icon: '👨‍🔧', desc: 'Fully qualified technicians' },
                     { title: 'Best Price', icon: '💰', desc: 'Competitive market rates' }
                   ].map((item) => (
@@ -286,11 +286,16 @@ function HomePage() {
                         border: '1px solid rgba(255,255,255,0.2)',
                         flex: 1,
                         transition: 'transform 0.2s',
+                        cursor: item.href ? 'pointer' : 'default',  // Only show pointer cursor if href exists
                         '&:hover': {
                           bgcolor: 'rgba(255,255,255,0.15)',
                         }
                       }}
                       spacing={0.5}
+                      onClick={item.href ? () => {
+                        const element = document.querySelector(item.href);
+                        element?.scrollIntoView({ behavior: 'smooth' });
+                      } : undefined}  // Only add onClick if href exists
                     >
                       <Typography fontSize={{ xs: '1.5rem', sm: '2rem' }}>{item.icon}</Typography>
                       <Typography color="white" variant={isMobile ? 'subtitle1' : 'h6'} fontWeight={600}>
