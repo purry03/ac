@@ -28,9 +28,7 @@ export function Footer() {
               </Box>
               <Stack direction="row" spacing={2.5} sx={{ mt: 2 }} justifyContent="center">
                 {[
-                  { icon: '/facebook.png', url: 'https://facebook.com/alphaduct', alt: 'Facebook' },
-                  { icon: '/instagram.png', url: 'https://instagram.com/alphaduct', alt: 'Instagram' },
-                  { icon: '/youtube.png', url: 'https://linkedin.com/company/alphaduct', alt: 'LinkedIn' }
+                  { icon: '/facebook.png', url: 'https://www.facebook.com/share/18N4jVT3Mp/', alt: 'Facebook' },
                 ].map((social) => (
                   <Box
                     key={social.alt}
